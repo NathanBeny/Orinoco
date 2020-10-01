@@ -1,0 +1,34 @@
+.liste-produits {
+  margin-top: 1rem;
+  &__block {
+    border: 1px solid gray;
+    margin: 1%;
+    padding: 1%;
+    display: flex;
+    @media screen and (max-width: 425px) {
+      flex-direction: column;
+    }
+    align-items: center;
+    &--left {
+      flex: 2;
+      & img {
+        width: 100%;
+      }
+    }
+    &--right {
+      flex: 3;
+      text-align: center;
+      & h2 {
+        font-size: 3rem;
+        color: black;
+        @media screen and (max-width: 425px) {
+          font-size: 1.5rem;
+        }
+      }
+      & p {
+        font-size: 1.5rem;
+        color: rgb(98, 45, 129);
+      }
+    }
+  }
+}
