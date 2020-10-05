@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path')
 
 module.exports = {
   mode: 'production',
@@ -6,6 +6,7 @@ module.exports = {
     polyfill: 'babel-polyfill',
     index: ['./js/index.js', './js/main.js'],
     products: ['./js/main.js', './js/products.js'],
+    panier: ['./js/main.js', './js/panier.js'],
   },
   output: {
     filename: '[name].bundle.js',
@@ -26,4 +27,4 @@ module.exports = {
       },
     ],
   },
-};
+}

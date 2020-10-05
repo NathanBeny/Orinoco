@@ -1,7 +1,5 @@
 import { getProduits } from './main.js'
 
-let idProduit = ''
-
 // getProduits().then(function (response) {
 //   console.log(response[0]);
 // });
@@ -62,5 +60,70 @@ async function allProductsList() {
     produitLink.textContent = 'Voir le produit'
   })
 }
+const produitSell = 'cameras' //Au choix entre : "cameras meubles pelluche"
+const APIURL = 'http://localhost:3000/api/' + produitSell + '/'
+//id produit => choix des different produit
+let error = ''
+let idProduit = ''
+let demo = document.getElementById('dodo')
+/*Build de la page du produit sélectionné
+ *********************************************************************************************************************************************************************** */
+async function detailProduit() {
+  //Collecter l'URL après le id= pour le récupérer uniquement sur l'API
 
-allProductsList()
+  idProduit = location.search.substring(4)
+
+  const produitSelected = await getProduits()
+  console.log(
+    'Administration : Vous regardez la page du produit id_' +
+      produitSelected._id
+  )
+
+  //Faire apparaitre  produit originalement display none
+
+  let section = document.getElementById('section')
+  // console.log(section);
+  section.style.display = 'block'
+
+  //Remplissage de la fiche produit
+  document
+    .getElementById('imgProduct')
+    .setAttribute('src', produitSelected.imageUrl)
+  document.getElementById('nameProduct').innerHTML = produitSelected.name
+  document.getElementById('descriptionProduct').innerHTML =
+    produitSelected.description
+  document.getElementById('priceProduct').innerHTML =
+    produitSelected.price / 100 + ' euros'
+
+  //Selon le type de produit (ligne 3) création des options
+  switch (produitSell) {
+    case 'cameras':
+      produitSelected.lenses.forEach((produit) => {
+        let optionProduit = document.createElement('option')
+        // console.log(optionProduit);
+        document
+          .getElementById('optionSelect')
+          .appendChild(optionProduit).innerHTML = produit
+      })
+      break
+    // case 'furniture':
+    //   produitSelected.varnish.forEach((produit) => {
+    //     let optionProduit = document.createElement('option');
+    //     document
+    //       .getElementById('optionSelect')
+    //       .appendChild(optionProduit).innerHTML = produit;
+    //   });
+    //   break;
+    // case 'teddies':
+    //   produitSelected.colors.forEach((produit) => {
+    //     let optionProduit = document.createElement('option');
+    //     document
+    //       .getElementById('optionSelect')
+    //       .appendChild(optionProduit).innerHTML = produit;
+    //   });
+    //   break;
+    default:
+  }
+}
+
+export { allProductsList, detailProduit }
