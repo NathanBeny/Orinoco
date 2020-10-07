@@ -1,12 +1,9 @@
 import { getProduits } from './main.js'
 
-let idProduit = ''
-let produitSell = ''
-
 /*Page panier
  ***********************************************************************************************************************************************/
 
-addition = () => {
+let addition = () => {
   //Vérifie si un prduit est dans le panier
   if (JSON.parse(localStorage.getItem('userPanier')).length > 0) {
     //S'il n'est pas vide on supprime le message et on créé le tableau récapitulatif
@@ -82,4 +79,21 @@ addition = () => {
     document.getElementById('sommeTotal').textContent = totalPaye + ' €'
   }
 }
+
+//Supprimer un produit du panier
+let annulerProduit = (i) => {
+  console.log("Administration : Enlever le produit à l'index " + i)
+  //recupérer le array
+  userPanier.splice(i, 1)
+  console.log('Administration : ' + userPanier)
+  //vide le localstorage
+  localStorage.clear()
+  console.log('Administration : localStorage vidé')
+  // mettre à jour le localStorage avec le nouveau panier
+  localStorage.setItem('userPanier', JSON.stringify(userPanier))
+  console.log('Administration : localStorage mis à jour')
+  //relancer la création de l'addition
+  window.location.reload()
+}
 addition()
+annulerProduit()
