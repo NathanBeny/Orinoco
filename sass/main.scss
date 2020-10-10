@@ -6,6 +6,7 @@
 @import './base/typography';
 
 @import './components/navigation';
+@import './components/btn';
 
 @import './layout/header';
 @import './layout/container';
@@ -15,3 +16,5 @@
 @import './layout/footer';
 
 @import './pages/listeproduits';
+@import './vendors/fontawesome.scss';
+@import './vendors/solid.scss';

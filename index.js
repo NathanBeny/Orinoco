@@ -1,4 +1,4 @@
-import { getProduits } from './main.js'
+import { getProduits } from './controllers/main.js'
 
 let idProduit = ''
 

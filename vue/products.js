@@ -116,4 +116,4 @@ let addPanier = () => {
 detailProduit()
 addPanier()
 
-console.log(localStorage)
+console.log(userPanier)

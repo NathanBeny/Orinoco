@@ -4,9 +4,9 @@ module.exports = {
   mode: 'production',
   entry: {
     polyfill: 'babel-polyfill',
-    index: ['./js/index.js', './js/main.js'],
-    products: ['./js/main.js', './js/products.js'],
-    panier: ['./js/main.js', './js/panier.js'],
+    index: ['./index.js', './controllers/main.js'],
+    products: ['./controllers/main.js', './vue/products.js'],
+    panier: ['./controllers/main.js', './vue/panier.js'],
   },
   output: {
     filename: '[name].bundle.js',
