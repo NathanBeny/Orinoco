@@ -1,129 +1,100 @@
-import { getProduits } from './main.js'
-
-// getProduits().then(function (response) {
-//   console.log(response[0]);
-// });
-
-/*Création du HTML après appel de l'API
- ****************************************************************************************************************************************************/
-
-//liste des produits en vente sur la page index
-async function allProductsList() {
-  const produits = await getProduits()
-
-  //Création de la section liste des produits
-  let listProduct = document.createElement('section')
-  listProduct.setAttribute('class', 'liste-produits')
-  //Ajout de la section dans le HTML
-  let main = document.getElementById('main')
-  main.appendChild(listProduct)
-
-  //Pour chaque produit  de l'API exécute une fonction donnée ( on créé l'encadré HTML du produit )
-  produits.forEach((produit) => {
-    //création des élements de la structure de la liste des produits en vente
-    //Une div conteneur )
-    let produitBlock = document.createElement('div')
-    //2 div(block gauche  droit)/
-    let produitLeft = document.createElement('div')
-    let produitRight = document.createElement('div')
-    // une image/
-    let produitImage = document.createElement('img')
-    //
-    let produitNom = document.createElement('h2')
-    //
-    let produitPrix = document.createElement('p')
-    //
-    let produitLink = document.createElement('a')
-
-    //Ajout des attributs pour  css
-    produitBlock.setAttribute('class', 'liste-produits__block')
-    produitLeft.setAttribute('class', 'liste-produits__block--left')
-    produitRight.setAttribute('class', 'liste-produits__block--right')
-    produitImage.setAttribute('src', produit.imageUrl)
-    produitImage.setAttribute('alt', 'image du produit')
-    produitLink.setAttribute('href', 'produit.html?id=' + produit._id)
-    //******************************************************************************************* */
-    //Block conteneur en flex
-    //Block gauche comprend l'image du produit
-    //Bloc droit comprend le nom/prix/le lien du produit
-    listProduct.appendChild(produitBlock)
-    produitBlock.appendChild(produitLeft)
-    produitLeft.appendChild(produitImage)
-    produitBlock.appendChild(produitRight)
-    produitRight.appendChild(produitNom)
-    produitRight.appendChild(produitPrix)
-    produitRight.appendChild(produitLink)
-
-    //contenu des balises
-    produitNom.textContent = produit.name
-    produitPrix.textContent = produit.price / 100 + ' euros'
-    produitLink.textContent = 'Voir le produit'
-  })
-}
-const produitSell = 'cameras' //Au choix entre : "cameras meubles pelluche"
-const APIURL = 'http://localhost:3000/api/' + produitSell + '/'
-//id produit => choix des different produit
-let error = ''
-let idProduit = ''
-let demo = document.getElementById('dodo')
-/*Build de la page du produit sélectionné
- *********************************************************************************************************************************************************************** */
-async function detailProduit() {
-  //Collecter l'URL après le id= pour le récupérer uniquement sur l'API
-
-  idProduit = location.search.substring(4)
-
-  const produitSelected = await getProduits()
-  console.log(
-    'Administration : Vous regardez la page du produit id_' +
-      produitSelected._id
-  )
-
-  //Faire apparaitre  produit originalement display none
-
-  let section = document.getElementById('section')
-  // console.log(section);
-  section.style.display = 'block'
-
-  //Remplissage de la fiche produit
-  document
-    .getElementById('imgProduct')
-    .setAttribute('src', produitSelected.imageUrl)
-  document.getElementById('nameProduct').innerHTML = produitSelected.name
-  document.getElementById('descriptionProduct').innerHTML =
-    produitSelected.description
-  document.getElementById('priceProduct').innerHTML =
-    produitSelected.price / 100 + ' euros'
-
-  //Selon le type de produit (ligne 3) création des options
-  switch (produitSell) {
-    case 'cameras':
-      produitSelected.lenses.forEach((produit) => {
-        let optionProduit = document.createElement('option')
-        // console.log(optionProduit);
-        document
-          .getElementById('optionSelect')
-          .appendChild(optionProduit).innerHTML = produit
-      })
-      break
-    // case 'furniture':
-    //   produitSelected.varnish.forEach((produit) => {
-    //     let optionProduit = document.createElement('option');
-    //     document
-    //       .getElementById('optionSelect')
-    //       .appendChild(optionProduit).innerHTML = produit;
-    //   });
-    //   break;
-    // case 'teddies':
-    //   produitSelected.colors.forEach((produit) => {
-    //     let optionProduit = document.createElement('option');
-    //     document
-    //       .getElementById('optionSelect')
-    //       .appendChild(optionProduit).innerHTML = produit;
-    //   });
-    //   break;
-    default:
+//Vérification du panier
+let checkPanier = () => {
+  //Vérifier qu'il y ai au moins un produit dans le panier
+  let etatPanier = JSON.parse(localStorage.getItem('userPanier'))
+  //Si le panier est vide ou null (suppression localStorage par)=>alerte
+  if (etatPanier == null) {
+    //Si l'utilisateur à supprimer son localStorage etatPanier sur la page basket.html et qu'il continue le process de commande
+    alert(
+      'Il y a eu un problème avec votre panier, une action non autorisée a été faite. Veuillez recharger la page pour la corriger'
+    )
+    return false
+  } else if (etatPanier.length < 1 || etatPanier == null) {
+    console.log(
+      'Administration: ERROR =>le localStorage ne contient pas de panier'
+    )
+    alert('Votre panier est vide')
+    return false
+  } else {
+    console.log("Administration : Le panier n'est pas vide")
+    //Si le panier n'est pas vide on rempli le products envoyé à l'API
+    JSON.parse(localStorage.getItem('userPanier')).forEach((produit) => {
+      products.push(produit._id)
+    })
+    console.log("Administration : Ce tableau sera envoyé à l'API : " + products)
+    return true
   }
 }
 
-export { allProductsList, detailProduit }
+/*Envoi du formulaire
+ **********************************************/
+
+//Fonction requet post de l'API
+let envoiDonnees = (objetRequest) => {
+  return new Promise((resolve) => {
+    let request = new XMLHttpRequest()
+    request.onreadystatechange = function () {
+      if (this.readyState == XMLHttpRequest.DONE && this.status == 201) {
+        //Sauvegarde du retour de l'API dans la sessionStorage pour affichage dans order-confirm.html
+        sessionStorage.setItem('order', this.responseText)
+
+        //Chargement de la page de confirmation
+        document.forms['form-panier'].action = './order-confirm.html'
+        document.forms['form-panier'].submit()
+
+        resolve(JSON.parse(this.responseText))
+      }
+    }
+    request.open('POST', APIURL + 'order')
+    request.setRequestHeader('Content-Type', 'application/json')
+    request.send(objetRequest)
+  })
+}
+
+//Au click sur le btn de validation du formulaire
+let validForm = () => {
+  //Ecoute de l'event click du formulaire
+  let btnForm = document.getElementById('envoiPost')
+  btnForm.addEventListener('click', function () {
+    //Lancement des verifications du panier et du form => si Ok envoi
+    if (checkPanier() == true && checkInput() != null) {
+      console.log("Administration : L'envoi peut etre fait")
+      //Création de l'objet à envoyer
+      let objet = {
+        contact,
+        products,
+      }
+      console.log('Administration : ' + objet)
+      //Conversion en JSON
+      let objetRequest = JSON.stringify(objet)
+      console.log('Administration : ' + objetRequest)
+      //Envoi de l'objet via la function
+      envoiDonnees(objetRequest)
+
+      //Une fois la commande faite retour à l'état initial des tableaux/objet/localStorage
+      contact = {}
+      products = []
+      localStorage.clear()
+    } else {
+      console.log('Administration : ERROR')
+    }
+  })
+}
+/*Affichage des informations sur la page de confirmation
+ **********************************************/
+let resultOrder = () => {
+  if (sessionStorage.getItem('order') != null) {
+    //Parse du session storage
+    let order = JSON.parse(sessionStorage.getItem('order'))
+    //Implatation de prénom et de id de commande dans le html sur la page de confirmation
+    document.getElementById('lastName').innerHTML = order.contact.lastName
+    document.getElementById('orderId').innerHTML = order.orderId
+
+    //Suppression de la clé du sessionStorage pour renvoyer au else si actualisation de la page ou via url direct
+    sessionStorage.removeItem('order')
+  } else {
+    //avertissement et redirection vers l'accueil
+    alert('Aucune commande passée, vous êtes arrivé ici par erreur')
+    window.open('./index.html')
+  }
+}

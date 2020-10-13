@@ -1,4 +1,4 @@
-import { addition, annulerProduit } from '../controllers/main.js'
+import { addition, annulerProduit, checkInput } from '../controllers/main.js'
 
 /*Création du HTML après appel de l'API
  **********************************************/
@@ -22,9 +22,10 @@ let addPanier = () => {
 
 console.log(userPanier)
 
-/*Page panier
- ***********************************************************************************************************************************************/
+/*Formulaire et vérif etat panier
+ **********************************************/
 
 addition()
 addPanier()
 annulerProduit()
+checkInput()
