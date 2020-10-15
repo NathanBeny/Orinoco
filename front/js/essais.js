@@ -1,3 +1,37 @@
+import { checkInput } from '../controllers/main.js'
+
+/*Envoi du formulaire
+ **********************************************/
+//L'user  panier
+const produitSell = 'cameras' //Au choix entre : "cameras meubles pelluche"
+const APIURL = 'http://localhost:3000/api/' + produitSell + '/'
+//id produit => choix des different produit
+//Tableau et objet demandé par l'API pour la commande
+let contact
+let products = []
+let userPanier = JSON.parse(localStorage.getItem('userPanier'))
+
+//Fonction requet post de l'API
+let envoiDonnees = (objetRequest) => {
+  return new Promise((resolve) => {
+    let request = new XMLHttpRequest()
+    request.onreadystatechange = function () {
+      if (this.readyState == XMLHttpRequest.DONE && this.status == 201) {
+        //Sauvegarde du retour de l'API dans la sessionStorage pour affichage dans order-confirm.html
+        sessionStorage.setItem('order', this.responseText)
+
+        //Chargement de la page de confirmation
+        document.forms['form-panier'].action = './order-confirm.html'
+        document.forms['form-panier'].submit()
+
+        resolve(JSON.parse(this.responseText))
+      }
+    }
+    request.open('POST', APIURL + 'order')
+    request.setRequestHeader('Content-Type', 'application/json')
+    request.send(objetRequest)
+  })
+}
 //Vérification du panier
 let checkPanier = () => {
   //Vérifier qu'il y ai au moins un produit dans le panier
@@ -25,32 +59,6 @@ let checkPanier = () => {
     return true
   }
 }
-
-/*Envoi du formulaire
- **********************************************/
-
-//Fonction requet post de l'API
-let envoiDonnees = (objetRequest) => {
-  return new Promise((resolve) => {
-    let request = new XMLHttpRequest()
-    request.onreadystatechange = function () {
-      if (this.readyState == XMLHttpRequest.DONE && this.status == 201) {
-        //Sauvegarde du retour de l'API dans la sessionStorage pour affichage dans order-confirm.html
-        sessionStorage.setItem('order', this.responseText)
-
-        //Chargement de la page de confirmation
-        document.forms['form-panier'].action = './order-confirm.html'
-        document.forms['form-panier'].submit()
-
-        resolve(JSON.parse(this.responseText))
-      }
-    }
-    request.open('POST', APIURL + 'order')
-    request.setRequestHeader('Content-Type', 'application/json')
-    request.send(objetRequest)
-  })
-}
-
 //Au click sur le btn de validation du formulaire
 let validForm = () => {
   //Ecoute de l'event click du formulaire
@@ -82,7 +90,8 @@ let validForm = () => {
 }
 /*Affichage des informations sur la page de confirmation
  **********************************************/
-let resultOrder = () => {
+
+let resultOrder = function () {
   if (sessionStorage.getItem('order') != null) {
     //Parse du session storage
     let order = JSON.parse(sessionStorage.getItem('order'))
@@ -98,3 +107,8 @@ let resultOrder = () => {
     window.open('./index.html')
   }
 }
+envoiDonnees()
+validForm()
+
+//Exports
+export { envoiDonnees, validForm, resultOrder }
