@@ -1,5 +1,5 @@
 import { addition, annulerProduit, checkInput } from '../controllers/main.js'
-import { envoiDonnees, resultOrder, validForm } from '../js/essais.js'
+import { envoiDonnees, resultOrder, validForm } from '../models/essais.js'
 
 /*Création du HTML après appel de l'API
  **********************************************/

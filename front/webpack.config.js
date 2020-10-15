@@ -6,7 +6,7 @@ module.exports = {
     polyfill: 'babel-polyfill',
     index: ['./index.js', './controllers/main.js'],
     products: ['./controllers/main.js', './vue/products.js'],
-    panier: ['./controllers/main.js', './vue/panier.js', './js/essais.js'],
+    panier: ['./controllers/main.js', './vue/panier.js', './models/essais.js'],
   },
   output: {
     filename: '[name].bundle.js',
