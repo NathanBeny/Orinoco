@@ -1,4 +1,46 @@
 @charset "UTF-8";
+.order-confirm {
+  background-color: #f3e9f1;
+  display: flex;
+  flex-direction: column;
+}
+.order-confirm__topbar {
+  text-align: center;
+}
+.order-confirm__topbar__logo {
+  width: 50%;
+}
+.order-confirm__card {
+  background-color: #ffffff;
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+}
+@media screen and (max-width: 425px) {
+  .order-confirm__card {
+    width: 100%;
+  }
+}
+.order-confirm__card__resume {
+  padding: 2rem;
+}
+.order-confirm__card__resume i {
+  color: #eea7a0;
+  font-size: 3rem;
+  padding: 5px;
+  border: 10px solid #eea7a0;
+  border-radius: 50%;
+}
+.order-confirm__card__resume__congrat {
+  color: #525f6d;
+  font-size: 4rem;
+  padding: 1rem 0;
+}
+.order-confirm__card__nav {
+  background-color: #d1d1d1;
+  padding: 1rem 0;
+}
+
 body {
   background-color: #f3e9f1;
   font-family: "Satisfy", cursive;

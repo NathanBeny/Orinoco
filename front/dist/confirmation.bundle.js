@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -110,6 +110,18 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 
 /***/ }),
 
+/***/ "./vue/confirmation.js":
+/*!*****************************!*\
+  !*** ./vue/confirmation.js ***!
+  \*****************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _controllers_main_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../controllers/main.js */ \"./controllers/main.js\");\nfunction asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }\n\nfunction _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, \"next\", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, \"throw\", err); } _next(undefined); }); }; }\n\n\n/*Génération de l'URL de l'API selon le choix de produit à vendre\r\n **********************************************/\n\nvar produitSell = 'cameras'; //Au choix entre : \"cameras\" - \"furniture\" - \"teddies\"\n\nvar APIURL = 'http://localhost:3000/api/' + produitSell + '/';\nvar error = ''; //id du produit pour permettre un tri dans l'API\n\nvar idProduit = '';\n/*Appel de l'API\r\n **********************************************/\n//Fonction requet post de l'API\n\nvar envoiDonnees = function envoiDonnees(objetRequest) {\n  return new Promise(function (resolve) {\n    var request = new XMLHttpRequest();\n\n    request.onreadystatechange = function () {\n      if (this.readyState == XMLHttpRequest.DONE && this.status == 201) {\n        //Sauvegarde du retour de l'API dans la sessionStorage pour affichage dans order-confirm.html\n        sessionStorage.setItem('order', this.responseText); //Chargement de la page de confirmation\n\n        document.forms['form-panier'].action = '../order-confirm.html';\n        document.forms['form-panier'].submit();\n        resolve(JSON.parse(this.responseText));\n      }\n    };\n\n    request.open('POST', APIURL + 'order');\n    request.setRequestHeader('Content-Type', 'application/json');\n    request.send(objetRequest);\n  });\n};\n/*Création du HTML après appel de l'API\r\n **********************************************/\n\n/*Build de la page du produit sélectionné\r\n **********************************************/\n\n\nfunction detailProduit() {\n  return _detailProduit.apply(this, arguments);\n} //L'user a maintenant un panier\n\n\nfunction _detailProduit() {\n  _detailProduit = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {\n    var produitSelected, section;\n    return regeneratorRuntime.wrap(function _callee2$(_context2) {\n      while (1) {\n        switch (_context2.prev = _context2.next) {\n          case 0:\n            //Collecter l'URL après le ?id= pour le récupérer uniquement sur l'API\n            idProduit = location.search.substring(4);\n            _context2.next = 3;\n            return getProduits();\n\n          case 3:\n            produitSelected = _context2.sent;\n            console.log('Administration : Vous regardez la page du produit id_' + produitSelected._id); //Faire apparaitre la fiche produit initialement en display none\n\n            section = document.getElementById('section');\n            section.style.display = 'block'; //Remplissage de la fiche produit\n\n            document.getElementById('imgProduct').setAttribute('src', produitSelected.imageUrl);\n            document.getElementById('nameProduct').innerHTML = produitSelected.name;\n            document.getElementById('descriptionProduct').innerHTML = produitSelected.description;\n            document.getElementById('priceProduct').innerHTML = produitSelected.price / 100 + ' euros'; //Selon le type de produit (ligne 3) création des options\n\n            _context2.t0 = produitSell;\n            _context2.next = _context2.t0 === 'cameras' ? 14 : _context2.t0 === 'furniture' ? 16 : _context2.t0 === 'teddies' ? 18 : 20;\n            break;\n\n          case 14:\n            produitSelected.lenses.forEach(function (produit) {\n              var optionProduit = document.createElement('option');\n              document.getElementById('optionSelect').appendChild(optionProduit).innerHTML = produit;\n            });\n            return _context2.abrupt(\"break\", 21);\n\n          case 16:\n            produitSelected.varnish.forEach(function (produit) {\n              var optionProduit = document.createElement('option');\n              document.getElementById('optionSelect').appendChild(optionProduit).innerHTML = produit;\n            });\n            return _context2.abrupt(\"break\", 21);\n\n          case 18:\n            produitSelected.colors.forEach(function (produit) {\n              var optionProduit = document.createElement('option');\n              document.getElementById('optionSelect').appendChild(optionProduit).innerHTML = produit;\n            });\n            return _context2.abrupt(\"break\", 21);\n\n          case 20:\n            console.log('Administration : Veuillez bien renseigner la variable produitSell ligne 2 du fichier script.js');\n\n          case 21:\n          case \"end\":\n            return _context2.stop();\n        }\n      }\n    }, _callee2);\n  }));\n  return _detailProduit.apply(this, arguments);\n}\n\nvar userPanier = JSON.parse(localStorage.getItem('userPanier'));\n/*Fonction ajouter le produit au panier de l'utilisateur\r\n *********************************************************************************************************************************************/\n\nvar addPanier = function addPanier() {\n  //Au clic de l'user pour mettre le produit dans le panier\n  var inputBuy = document.getElementById('ajouterProduitPanier');\n  inputBuy.addEventListener('click', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {\n    var produits;\n    return regeneratorRuntime.wrap(function _callee$(_context) {\n      while (1) {\n        switch (_context.prev = _context.next) {\n          case 0:\n            _context.next = 2;\n            return getProduits();\n\n          case 2:\n            produits = _context.sent;\n            //Récupération du panier dans le localStorage et ajout du produit dans le panier avant revoit dans le localStorage\n            userPanier.push(produits);\n            localStorage.setItem('userPanier', JSON.stringify(userPanier));\n            console.log('Administration : le produit a été ajouté au panier');\n            alert('Vous avez ajouté ce produit dans votre panier');\n\n          case 7:\n          case \"end\":\n            return _context.stop();\n        }\n      }\n    }, _callee);\n  })));\n};\n\ndetailProduit();\naddPanier();\nenvoiDonnees();\nObject(_controllers_main_js__WEBPACK_IMPORTED_MODULE_0__[\"resultOrder\"])();\nconsole.log(userPanier);\n\n//# sourceURL=webpack:///./vue/confirmation.js?");
+
+/***/ }),
+
 /***/ "./vue/panier.js":
 /*!***********************!*\
   !*** ./vue/panier.js ***!
@@ -122,14 +134,14 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _con
 
 /***/ }),
 
-/***/ 2:
-/*!**********************************************************************!*\
-  !*** multi ./controllers/main.js ./vue/panier.js ./models/essais.js ***!
-  \**********************************************************************/
+/***/ 3:
+/*!********************************************************************************************!*\
+  !*** multi ./controllers/main.js ./vue/panier.js ./models/essais.js ./vue/confirmation.js ***!
+  \********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("__webpack_require__(/*! ./controllers/main.js */\"./controllers/main.js\");\n__webpack_require__(/*! ./vue/panier.js */\"./vue/panier.js\");\nmodule.exports = __webpack_require__(/*! ./models/essais.js */\"./models/essais.js\");\n\n\n//# sourceURL=webpack:///multi_./controllers/main.js_./vue/panier.js_./models/essais.js?");
+eval("__webpack_require__(/*! ./controllers/main.js */\"./controllers/main.js\");\n__webpack_require__(/*! ./vue/panier.js */\"./vue/panier.js\");\n__webpack_require__(/*! ./models/essais.js */\"./models/essais.js\");\nmodule.exports = __webpack_require__(/*! ./vue/confirmation.js */\"./vue/confirmation.js\");\n\n\n//# sourceURL=webpack:///multi_./controllers/main.js_./vue/panier.js_./models/essais.js_./vue/confirmation.js?");
 
 /***/ })
 

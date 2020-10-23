@@ -1,12 +1,18 @@
 const path = require('path')
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: {
     polyfill: 'babel-polyfill',
     index: ['./index.js', './controllers/main.js'],
     products: ['./controllers/main.js', './vue/products.js'],
     panier: ['./controllers/main.js', './vue/panier.js', './models/essais.js'],
+    confirmation: [
+      './controllers/main.js',
+      './vue/panier.js',
+      './models/essais.js',
+      './vue/confirmation.js',
+    ],
   },
   output: {
     filename: '[name].bundle.js',
