@@ -7,10 +7,14 @@
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
     />
     <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="font/fontawesome-free-5.13.0-web/css/all.min.css"
+    />
     <title>Votre produit ORINOCO</title>
     <meta
       name="description"
-      content="ORINOCO est un site de vente en ligne d'ours en peluche, de meubles en bois et de caméras anciennes"
+      content="ORINOCO est un site de vente en ligne de caméras anciennes"
     />
   </head>
   <body class="order-confirm">
@@ -18,7 +22,7 @@
       <h1>
         <img
           class="order-confirm__topbar__logo"
-          src="img/orinoco-logo.png"
+          src="img/orinoco.png"
           alt="Logo d'Orinoco"
         />
       </h1>
@@ -42,8 +46,10 @@
     </section>
 
     <!-- Scripts JS -->
-    <script src="dist/polyfill.bundle.js"></script>
-    <script src="dist/confirmation.bundle.js"></script>
+    <script src="vue/products.js"></script>
+    <script>
+      resultOrder()
+    </script>
 
     <!-- Scripts JS END -->
   </body>

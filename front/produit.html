@@ -7,10 +7,18 @@
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
     />
     <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="font/fontawesome-free-5.13.0-web/css/all.min.css"
+    />
     <title>Votre produit ORINOCO</title>
     <meta
       name="description"
-      content="ORINOCO est un site de vente en ligne d'ours en peluche, de meubles en bois et de caméras anciennes"
+      content="ORINOCO est un site de vente en ligne de caméras anciennes"
+    />
+    <link
+      rel="stylesheet"
+      href="font/fontawesome-free-5.13.0-web/css/all.min.css"
     />
   </head>
   <body class="container">
@@ -64,8 +72,11 @@
     </main>
     <footer></footer>
     <!-- Scripts JS -->
-    <script src="dist/polyfill.bundle.js"></script>
-    <script src="dist/products.bundle.js"></script>
+    <script src="vue/products.js"></script>
+    <script>
+      detailProduit()
+      addPanier()
+    </script>
 
     <!-- Scripts JS END -->
   </body>
